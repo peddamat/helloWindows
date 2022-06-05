@@ -158,8 +158,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return DefWindowProc(hWnd, message, wParam, lParam);
         break;
     case WM_GETMINMAXINFO:
+    {
         OutputDebugString(L"WM_GETMINMAXINFO received\n");
-        return DefWindowProc(hWnd, message, wParam, lParam);
+        auto minmax = reinterpret_cast<MINMAXINFO*>(lParam);
+        minmax->ptMaxSize.x = minmax->ptMaxSize.x - 100;
+        minmax->ptMaxSize.y = minmax->ptMaxSize.y - 100;
+
+        minmax->ptMaxPosition.x = 100;
+        minmax->ptMaxPosition.y = 100;
+        return 0;
+    }
         break;
     case WM_WINDOWPOSCHANGING:
         OutputDebugString(L"WM_WINDOWPOSCHANGING received\n");
